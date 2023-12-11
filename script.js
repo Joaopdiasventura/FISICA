@@ -171,7 +171,6 @@ const maxRadius = 200;
                 let param = Number(hash.substr(1)); 
                 if (isFinite(param)) {
                     settings.seed = param;
-                    console.log("Using seed " + settings.seed);
                 }
             }
         }
@@ -179,9 +178,8 @@ const maxRadius = 200;
         function randomRules() {
             if (!isFinite(settings.seed)) settings.seed = 0xcafecafe;
             window.location.hash = "#" + settings.seed;
-            document.title = "Life #" + settings.seed;
+            document.title = "VIDA N° " + settings.seed;
             local_seed = settings.seed;
-            console.log("Seed=" + local_seed);
             for (const i of settings.colors) {
                 settings.rules[i] = {};
                 for (const j of settings.colors) {
@@ -189,7 +187,6 @@ const maxRadius = 200;
                 }
                 settings.radii[i] = 80;
             }
-            console.log(JSON.stringify(settings.rules));
             flattenRules()
         }
 
@@ -488,12 +485,9 @@ const maxRadius = 200;
         const atoms = []
         randomAtoms(settings.atoms.count, true)
 
-
         setupClicks()
         setupKeys()
         setupGUI()
-
-        console.log('settings', settings)
 
         var lastT = Date.now();
         update();
@@ -536,7 +530,7 @@ const maxRadius = 200;
             if (settings.explore) exploreParameters();
         }
 
-        function dataURL_downloader(dataURL, name = `particle_life_${settings.seed}`) {
+        function dataURL_downloader(dataURL, name = `VIDA N° ${settings.seed}`) {
             const hyperlink = document.createElement("a");
             hyperlink.download = name;
             hyperlink.target = '_blank';
