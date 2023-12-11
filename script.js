@@ -2,6 +2,7 @@ const maxRadius = 200;
         const maxClusters = 20;
         const minClusterSize = 50;
         const predefinedColors = ['green', 'red', 'orange', 'cyan', 'magenta', 'lavender', 'teal'];
+        const names = ['VERDE', 'VERMELHO', 'LARANJA', 'CIANO', 'ROSA', 'BRANCO', 'teal'];
         const settings = {
             seed: 91651088029,
             fps: 0,
@@ -128,33 +129,32 @@ const maxRadius = 200;
             configFolder.add(settings, 'wallRepel', 0, 100, 1).name('PAREDE').listen()
             configFolder.add(settings, 'explore').name('EXPLORAÇÃO ALEATÓRIA').listen()
 
-            const drawingsFolder = settings.gui.addFolder('Drawings')
-            drawingsFolder.add(settings.atoms, 'radius', 1, 10, 0.5).name('Radius').listen()
+            const drawingsFolder = settings.gui.addFolder('DESENHOS')
+            drawingsFolder.add(settings.atoms, 'radius', 1, 10, 0.5).name('RAIO').listen()
 
-            drawingsFolder.add(settings.drawings, 'circle').name('Circle Shape').listen()
-            drawingsFolder.add(settings.drawings, 'clusters').name('Track Clusters').listen()
+            drawingsFolder.add(settings.drawings, 'circle').name('FORMATO DO CIRCULO').listen()
+            drawingsFolder.add(settings.drawings, 'clusters').name('TRAÇAR CAMINHO').listen()
 
-            drawingsFolder.add(settings.drawings, 'lines').name('Draw Lines').listen()
-            drawingsFolder.addColor(settings.drawings, 'background_color').name('Background Color').listen()
+            drawingsFolder.add(settings.drawings, 'lines').name('DESENHAR LINHAS').listen()
+            drawingsFolder.addColor(settings.drawings, 'background_color').name('FUNDO').listen()
 
-            const exportFolder = settings.gui.addFolder('Export')
-            exportFolder.add(settings.export, 'image').name('Image')
-            exportFolder.add(settings.export, 'video').name('Video: Start / stop')
-            for (const atomColor of settings.colors) {
+            const exportFolder = settings.gui.addFolder('EXPORTAR')
+            exportFolder.add(settings.export, 'image').name('IMAGEM')
+            exportFolder.add(settings.export, 'video').name('VIDEO: INICIAR / PARAR')
+
+            for (let i = 0; i < settings.colors.length; i++) {
                 const colorFolder =
-                    settings.gui.addFolder(`Rules: <font color=\'${atomColor}\'>${atomColor.capitalise()}</font>`)
-                for (const ruleColor of settings.colors) {
-                    colorFolder.add(settings.rules[atomColor], ruleColor, -1, 1, 0.001)
-                         .name(`<-> <font color=\'${ruleColor}\'>${ruleColor.capitalise()}</font>`)
-                         .listen().onFinishChange(v => { flattenRules() }
-                    )
+                    settings.gui.addFolder(`REGRAS: <font color=\'${settings.colors[i]}\'>${names[i].capitalise()}</font>`)
+                for (let j = 0; j < settings.colors.length; j++) {
+                    colorFolder.add(settings.rules[settings.colors[j]], settings.colors[j], -1, 1, 0.001)
+                    .name(`<-> <font color=\'${settings.colors[j]}\'>${names[j].capitalise()}</font>`)
+                    .listen().onFinishChange(v => { flattenRules() }
+               )     
                 }
-                colorFolder.add(settings.radii, atomColor, 1, maxRadius, 5).name('Radius')
+                colorFolder.add(settings.radii, settings.colors[i], 1, maxRadius, 5).name('RAIO')
                     .listen().onFinishChange(v => { flattenRules() }
                 )
             }
-
-
         }
 
         var local_seed = settings.seed;
